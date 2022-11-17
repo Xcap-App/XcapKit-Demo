@@ -31,7 +31,7 @@ class CircleRenderer: ObjectRenderer, Editable {
         }
         
         let circleRenderer = PathGraphicsRenderer(method: .stroke(lineWidth: lineWidth), color: strokeColor) { path in
-            path.addArc(center: circle.center, radius: circle.radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
+            path.addCircle(circle)
         }
         
         return [circleRenderer]
