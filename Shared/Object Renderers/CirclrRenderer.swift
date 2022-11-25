@@ -15,7 +15,7 @@ class CircleRenderer: ObjectRenderer, Editable {
     private var circle: Circle?
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        layout.first?.count != 3 ? .push(finishable: false) : .finish
+        .singleSection(withNumberOfItems: 3, for: layout)
     }
     
     override func layoutDidUpdate() {

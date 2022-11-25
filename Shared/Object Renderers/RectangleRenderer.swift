@@ -23,7 +23,7 @@ class RectangleRenderer: ObjectRenderer, Editable {
     }
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        layout.first?.count != 8 ? .push(finishable: false) : .finish
+        .singleSection(withNumberOfItems: 8, for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {

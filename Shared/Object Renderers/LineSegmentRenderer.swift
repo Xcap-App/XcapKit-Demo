@@ -12,7 +12,7 @@ import XcapKit
 class LineSegmentRenderer: ObjectRenderer, Editable {
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        layout.first?.count != 2 ? .push(finishable: false) : .finish
+        .singleSection(withNumberOfItems: 2, for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {
