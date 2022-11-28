@@ -21,7 +21,7 @@ extension XcapView {
     
 }
 
-class RotatorPlugin: PluginType {
+class RotatorPlugin: Plugin {
     
     private enum InitialState {
         case center(ObjectRenderer.PointDescriptor)
@@ -36,11 +36,15 @@ class RotatorPlugin: PluginType {
     
     private var initialState: InitialState?
     
-    var priority: XcapKit.PluginPriority {
+    override var priority: Plugin.Priority {
         .high
     }
     
-    func shouldBegin(in xcapView: XcapKit.XcapView, location: CGPoint) -> Bool {
+    deinit {
+        print("bye", self)
+    }
+    
+    override func shouldBegin(in xcapView: XcapView, location: CGPoint) -> Bool {
         guard let object = xcapView.selectedObject,
               let rotationCenter = object.rotationCenter
         else {
@@ -71,7 +75,7 @@ class RotatorPlugin: PluginType {
         return false
     }
     
-    func update(in xcapView: XcapView, state: PluginState) {
+    override func update(in xcapView: XcapView, state: Plugin.State) {
         guard let object = xcapView.selectedObject else {
             return
         }
@@ -126,7 +130,7 @@ class RotatorPlugin: PluginType {
         }
     }
     
-    func shouldDraw(in xcapView: XcapKit.XcapView, state: XcapKit.PluginState) -> Bool {
+    override func shouldDraw(in xcapView: XcapView, state: Plugin.State) -> Bool {
         switch xcapView.state {
         case .editing, .moving:
             return false
@@ -135,7 +139,7 @@ class RotatorPlugin: PluginType {
         }
     }
     
-    func draw(in xcapView: XcapView, state: PluginState, context: CGContext) {
+    override func draw(in xcapView: XcapView, state: Plugin.State, context: CGContext) {
         guard let object = xcapView.selectedObject,
               let rotationCenter = object.rotationCenter
         else {

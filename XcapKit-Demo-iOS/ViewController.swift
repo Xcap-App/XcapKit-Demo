@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     
     var objectObservation: NSKeyValueObservation?
     var selectionObservation: NSKeyValueObservation?
+    var rotatorPlugin = RotatorPlugin()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,7 @@ class ViewController: UIViewController {
     func setupXcapView() {
         xcapView.selectionRange = 12
         xcapView.delegate = self
+        xcapView.addPlugin(rotatorPlugin)
         
         objectObservation = xcapView.observe(\.currentObject, options: [.initial, .new]) { [weak self] xcapView, _ in
             self?.updateUI()
@@ -134,17 +136,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func rotationButtonAction(_ sender: Any) {
-        let rotatorOn = xcapView.plugins.contains {
-            $0 is RotatorPlugin
-        }
-        
-        if rotatorOn {
-            xcapView.plugins.removeAll { plugin in
-                plugin is RotatorPlugin
-            }
-        } else {
-            xcapView.plugins.append(RotatorPlugin())
-        }
+        rotatorPlugin.isEnabled.toggle()
         
         updateUI()
     }

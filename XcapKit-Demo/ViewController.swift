@@ -22,12 +22,14 @@ class ViewController: NSViewController {
     
     var objectObservation: NSKeyValueObservation?
     var selectionObservation: NSKeyValueObservation?
+    var rotatorPlugin = RotatorPlugin()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         xcapView.contentSize = CGSize(width: 1080, height: 720)
         xcapView.delegate = self
+        xcapView.addPlugin(rotatorPlugin)
         
         objectObservation = xcapView.observe(\.currentObject, options: [.initial, .new]) { [weak self] xcapView, _ in
             self?.updateUI()
@@ -42,7 +44,7 @@ class ViewController: NSViewController {
     
     func updateUI() {
         removeButton.isEnabled = !xcapView.selectedObjects.isEmpty
-        rotationCheckbox.state = xcapView.plugins.contains { $0 is RotatorPlugin } ? .on : .off
+        rotationCheckbox.state = rotatorPlugin.isEnabled ? .on : .off
         
         let types: [ObjectRenderer.Type] = [LineSegmentRenderer.self, TriangleRenderer.self, CircleRenderer.self, RectangleRenderer.self, PencilRenderer.self]
         let buttons: [NSButton] = [self.lineSegmentButton, self.triangleButton, self.circleButton, self.rectangleButton, self.pencilButton]
@@ -91,17 +93,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func rotationCheckboxAction(_ sender: Any) {
-        let rotatorOn = xcapView.plugins.contains {
-            $0 is RotatorPlugin
-        }
-        
-        if rotatorOn {
-            xcapView.plugins.removeAll { plugin in
-                plugin is RotatorPlugin
-            }
-        } else {
-            xcapView.plugins.append(RotatorPlugin())
-        }
+        rotatorPlugin.isEnabled.toggle()
         
         updateUI()
     }
