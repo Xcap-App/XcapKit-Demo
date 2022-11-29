@@ -88,10 +88,7 @@ class ViewController: UIViewController {
             }
         }
         
-        let rotatorOn = xcapView.plugins.contains {
-            $0 is RotatorPlugin
-        }
-        let rotationButtonImage = UIImage(systemName: rotatorOn ? "checkmark.circle.fill" : "circle.fill")
+        let rotationButtonImage = UIImage(systemName: rotatorPlugin.isEnabled ? "checkmark.circle.fill" : "circle.fill")
         
         rotationButton.setImage(rotationButtonImage, for: .normal)
         undoButton.isEnabled = undoManager?.canUndo ?? false
