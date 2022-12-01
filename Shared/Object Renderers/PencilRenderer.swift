@@ -16,7 +16,7 @@ import XcapKit
 class PencilRenderer: ObjectRenderer {
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        layout.isEmpty ? .push(finishable: false) : .continuousPushThenFinish
+        .singleContinuousSection(for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {
