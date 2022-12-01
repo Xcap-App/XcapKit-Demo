@@ -150,7 +150,7 @@ extension ViewController: XcapViewDelegate {
         print("💠 Did finish drawing session : \(type(of: object)).")
         
         if object is Editable {
-            object.setRotationCenter(.item(.zero), undoMode: .disable)
+            object.setRotationCenter(.item(.zero))
         }
     }
     
