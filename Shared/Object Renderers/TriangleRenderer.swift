@@ -16,7 +16,7 @@ class TriangleRenderer: ObjectRenderer, Editable {
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {
-        .unfinished
+        [.beforeFinishable]
     }
     
     override func makePreliminaryGraphics() -> [Drawable] {
