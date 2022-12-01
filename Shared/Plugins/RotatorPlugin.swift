@@ -97,16 +97,16 @@ class RotatorPlugin: Plugin {
                 let convertedSelectionRange = xcapView.selectionRange * xcapView.contentScaleFactors.toContent.x
                 
                 if let position = findItemPosition(for: object, at: convertedLocation, range: convertedSelectionRange) {
-                    object.setRotationCenter(.item(position), undoMode: .disable)
+                    object.setRotationCenter(.item(position))
                 } else {
-                    object.setRotationCenter(.fixed(convertedLocation), undoMode: .disable)
+                    object.setRotationCenter(.fixed(convertedLocation))
                 }
                 
             case let .angle(initialRotationCenter, _):
                 let centerPoint = object.point(with: initialRotationCenter)
                 let rotation = Angle(radians: Line(start: centerPoint, end: convertedLocation).angle)
                 
-                object.rotate(angle: rotation, undoMode: .disable)
+                object.rotate(angle: rotation)
             }
             
         case .ended:
@@ -217,7 +217,7 @@ extension RotatorPlugin {
                 plugin.registerUndoSetRotationCenter(undoManager: undoManager, object: object, rotationCenter: rotationCenter)
             }
             
-            object.setRotationCenter(rotationCenter, undoMode: .disable)
+            object.setRotationCenter(rotationCenter)
         }
     }
     
@@ -231,7 +231,7 @@ extension RotatorPlugin {
                 plugin.registerUndoRotate(undoManager: undoManager, object: object, rotationAngle: object.rotationAngle)
             }
             
-            object.rotate(angle: rotationAngle, undoMode: .disable)
+            object.rotate(angle: rotationAngle)
         }
     }
     
