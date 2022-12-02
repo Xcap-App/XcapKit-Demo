@@ -9,10 +9,10 @@ import Foundation
 
 import XcapKit
 
-class LineSegmentRenderer: ObjectRenderer, Editable {
+class LineSegmentRenderer: ObjectRenderer, Editable, Rotatable {
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        .singleSection(withNumberOfItems: 2, for: layout)
+        .singleSection(items: 2, for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {

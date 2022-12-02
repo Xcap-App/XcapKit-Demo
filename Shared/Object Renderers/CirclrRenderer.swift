@@ -10,12 +10,12 @@ import CoreGraphics
 
 import XcapKit
 
-class CircleRenderer: ObjectRenderer, Editable {
+class CircleRenderer: ObjectRenderer, Editable, Rotatable {
     
     private var circle: Circle?
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        .singleSection(withNumberOfItems: 3, for: layout)
+        .singleSection(items: 3, for: layout)
     }
     
     override func layoutDidUpdate() {

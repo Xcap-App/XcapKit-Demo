@@ -9,7 +9,7 @@ import Foundation
 
 import XcapKit
 
-class RectangleRenderer: ObjectRenderer, Editable {
+class RectangleRenderer: ObjectRenderer, Editable, Rotatable {
     
     private let itemOrder: [Int] = [0, 1, 2, 3, 7, 4, 5, 6]
     
@@ -23,7 +23,7 @@ class RectangleRenderer: ObjectRenderer, Editable {
     }
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        .singleSection(withNumberOfItems: 8, for: layout)
+        .singleSection(items: 8, for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {

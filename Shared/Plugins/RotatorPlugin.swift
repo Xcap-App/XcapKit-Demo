@@ -13,10 +13,14 @@ import UIKit
 
 import XcapKit
 
+protocol Rotatable: ObjectRenderer {
+    
+}
+
 extension XcapView {
     
-    fileprivate var selectedObject: ObjectRenderer? {
-        selectedObjects.count == 1 ? selectedObjects.first : nil
+    fileprivate var selectedObject: Rotatable? {
+        selectedObjects.count == 1 ? selectedObjects.first as? Rotatable : nil
     }
     
 }

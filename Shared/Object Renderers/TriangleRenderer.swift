@@ -9,10 +9,10 @@ import Foundation
 
 import XcapKit
 
-class TriangleRenderer: ObjectRenderer, Editable {
+class TriangleRenderer: ObjectRenderer, Editable, Rotatable {
     
     override var layoutAction: ObjectRenderer.LayoutAction {
-        .singleSection(withNumberOfItems: 3, for: layout)
+        .singleSection(items: 3, for: layout)
     }
     
     override var preliminaryGraphicsDrawingStrategy: ObjectRenderer.DrawingStrategy {
