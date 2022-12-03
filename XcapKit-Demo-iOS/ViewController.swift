@@ -142,36 +142,10 @@ class ViewController: UIViewController {
 
 extension ViewController: XcapViewDelegate {
     
-    func xcapView(_ xcapView: XcapView, didStartDrawingSessionWithObject object: ObjectRenderer) {
-        print("💠 Did start drawing session : \(type(of: object)).")
-    }
-    
     func xcapView(_ xcapView: XcapView, didFinishDrawingSessionWithObject object: ObjectRenderer) {
-        print("💠 Did finish drawing session : \(type(of: object)).")
-        
         if object is Editable {
             object.setRotationCenter(.item(.zero))
         }
-    }
-    
-    func xcapViewDidCancelDrawingSession(_ xcapView: XcapView) {
-        print("⚠️ Did cancel drawing session.")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didSelectObjects objects: [ObjectRenderer]) {
-        print("💠 Selected \(objects.map({ type(of: $0) })).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didDeselectObjects objects: [ObjectRenderer]) {
-        print("💠 Deselected \(objects.map({ type(of: $0) })).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didEditObject object: ObjectRenderer, at position: ObjectLayout.Position) {
-        print("💠 Edited \(type(of: object)) at \(position).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didMoveObjects objects: [ObjectRenderer]) {
-        print("💠 Moved \(objects.map({ type(of: $0) })).")
     }
     
 }

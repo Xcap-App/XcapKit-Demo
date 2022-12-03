@@ -28,7 +28,10 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         
         xcapView.contentSize = CGSize(width: 1080, height: 720)
+        xcapView.selectionRange = 6
         xcapView.delegate = self
+        xcapView.drawingDelegate = self
+        xcapView.itemSelectionMode = .rectangle
         xcapView.addPlugin(rotatorPlugin)
         
         objectObservation = xcapView.observe(\.currentObject, options: [.initial, .new]) { [weak self] xcapView, _ in
@@ -123,36 +126,10 @@ extension ViewController: NSMenuItemValidation {
 
 extension ViewController: XcapViewDelegate {
     
-    func xcapView(_ xcapView: XcapView, didStartDrawingSessionWithObject object: ObjectRenderer) {
-        print("💠 Did start drawing session : \(type(of: object)).")
-    }
-    
     func xcapView(_ xcapView: XcapView, didFinishDrawingSessionWithObject object: ObjectRenderer) {
-        print("💠 Did finish drawing session : \(type(of: object)).")
-        
         if object is Editable {
             object.setRotationCenter(.item(.zero))
         }
-    }
-    
-    func xcapViewDidCancelDrawingSession(_ xcapView: XcapView) {
-        print("⚠️ Did cancel drawing session.")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didSelectObjects objects: [ObjectRenderer]) {
-        print("💠 Selected \(objects.map({ type(of: $0) })).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didDeselectObjects objects: [ObjectRenderer]) {
-        print("💠 Deselected \(objects.map({ type(of: $0) })).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didEditObject object: ObjectRenderer, at position: ObjectLayout.Position) {
-        print("💠 Edited \(type(of: object)) at \(position).")
-    }
-    
-    func xcapView(_ xcapView: XcapView, didMoveObjects objects: [ObjectRenderer]) {
-        print("💠 Moved \(objects.map({ type(of: $0) })).")
     }
     
     func xcapView(_ xcapView: XcapView, menuForObject object: ObjectRenderer?) -> NSMenu? {
@@ -169,6 +146,55 @@ extension ViewController: XcapViewDelegate {
         }
         
         return menu
+    }
+    
+}
+
+extension ViewController: XcapViewDrawingDelegate {
+    
+    func xcapView(_ xcapView: XcapView, drawBoundingBox boundingBox: CGRect, highlighted: Bool, context: CGContext) {
+        let boundingBox = boundingBox.insetBy(dx: -xcapView.selectionRange, dy: -xcapView.selectionRange)
+        let path = CGPath(roundedRect: boundingBox, cornerWidth: 4, cornerHeight: 4, transform: nil)
+        let strokeColor = NSColor.black
+        let fillColor = highlighted ? NSColor.cyan.withAlphaComponent(0.1) : .white.withAlphaComponent(0.1)
+        
+        context.addPath(path)
+        context.clip(using: .evenOdd)
+        
+        context.setFillColor(fillColor.cgColor)
+        context.addPath(path)
+        context.fillPath()
+        
+        context.setShadow(offset: .zero, blur: 3, color: .black)
+        context.setStrokeColor(strokeColor.cgColor)
+        context.addPath(path)
+        context.strokePath()
+    }
+    
+    func xcapView(_ xcapView: XcapView, drawItemAt point: CGPoint, highlighted: Bool, context: CGContext) {
+        let bounds = CGRect(origin: .zero, size: xcapView.contentRect.size)
+        let width = xcapView.selectionRange
+        let origin = CGPoint(x: point.x - width, y: point.y - width)
+        let size = CGSize(width: width * 2, height: width * 2)
+        let rect = CGRect(origin: origin, size: size)
+        let strokeColor = NSColor.black
+        let fillColor = highlighted ? NSColor.white : .white
+        
+        context.setFillColor(fillColor.cgColor)
+        context.addRect(rect)
+        context.fillPath()
+        
+        context.addRect(bounds)
+        context.addRect(rect.insetBy(dx: 1, dy: 1))
+        context.clip(using: .evenOdd)
+        
+        if highlighted {
+            context.setShadow(offset: .zero, blur: 3, color: .black)
+        }
+        
+        context.setStrokeColor(strokeColor.cgColor)
+        context.addRect(rect)
+        context.strokePath()
     }
     
 }
